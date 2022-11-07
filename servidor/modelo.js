@@ -16,6 +16,13 @@ function Juego(){
 		delete this.usuarios[nick];
 	}
 
+	this.usuarioSale=function(nick){
+		if (this.usuarios[nick]){
+			this.finalizarPartida(nick);
+			this.eliminarUsuario(nick);
+		}
+	}
+
 	this.jugadorCreaPartida = function(nick){
 		let usr = this.usuarios[nick];
 		let res = {"codigo": -1};
@@ -69,6 +76,12 @@ function Juego(){
 		return lista;
 	}
 
+	this.obtenerPartida=function(codigo){
+		if (this.partidas[codigo]){
+			return this.partidas[codigo];
+		}
+	}
+
 	this.obtenerPartidasDisponibles=function(){
 		//devolver solo las partidas sin completar
 		let lista=[];
@@ -86,10 +99,6 @@ function Juego(){
 				this.partidas[key].fase="final";
 			}
 		}
-	}
-
-	this.obtenerPartida = function(codigo){
-		return this.partidas[codigo];
 	}
 }
 

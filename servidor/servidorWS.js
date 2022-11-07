@@ -8,6 +8,10 @@ function ServidorWS(){
 		io.sockets.in(codigo).emit(mensaje,datos)
 	}
 
+    this.enviarATodos=function(socket,mens,datos){
+        socket.broadcast.emit(mens,datos);
+    }
+
 
 
 
@@ -20,18 +24,23 @@ function ServidorWS(){
             socket.on("crearPartida", function(nick){ 
                 //Si se quieren hacer partidas de más de 2 jugadores, hay que agregar la variable 'num' a esta función
                 let res = juego.jugadorCreaPartida(nick);
-                socket.join(res.codigo);
-                cli.enviarAlRemitente(socket, "partidaCreada", res);
+                let codigoStr = res.codigo.toString();
+                socket.join(codigoStr);
+                //cli.enviarAlRemitente(socket,"partidaCreada",res);
+                cli.enviarATodosEnPartida(io,codigoStr,"partidaCreada",res)
+	  			let lista=juego.obtenerPartidasDisponibles();
+	  			cli.enviarATodos(socket,"actualizarListaPartidas",lista);
             });
 
             socket.on("unirseAPartida", function(nick, codigo){
-                let res = juego.jugadorSeUneAPartida(nick, codigo);
-                socket.join(res.codigo);
-                cli.enviarAlRemitente(socket, "unidoAPArtida", res);
-                
-                let partida = juego.obtenerPartida(codigo);
-                if(partida.fase.esJugando()){
-                    cli.enviarATodosEnPartida(io, codigo, "aJugar", {});
+                let codigoStr=codigo.toString();
+			  	socket.join(codigoStr);
+			  	let res = juego.jugadorSeUneAPartida(nick,codigo);		  	
+			  	cli.enviarAlRemitente(socket,"unidoAPartida",res);		  	
+			  	let partida=juego.obtenerPartida(codigo);
+
+                if (partida.esJugando()){
+                    cli.enviarATodosEnPartida(io,codigoStr,"aJugar",{});
                 }
             });
         });
