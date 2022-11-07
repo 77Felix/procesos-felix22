@@ -72,6 +72,12 @@ app.get("/obtenerPartidasDisponibles", function(request, response){
   response.send(lista);
 });
 
+app.get("/salir/:nick",function(request,response){
+  let nick=request.params.nick;
+  juego.usuarioSale(nick);
+  response.send({res:"ok"})
+});
+
 // Start the server
 
 /*app.listen(PORT, () => {
