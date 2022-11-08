@@ -21,6 +21,18 @@ function ClienteWS(){
 		this.socket.emit("abandonarPartida", rest.nick, cws.codigo);
 	}
 
+    this.colocarBarco = function(nombre, x, y){
+
+    }
+
+    this.barcosDesplegados = function(){
+
+    }
+
+    this.disparar = function(x, y){
+        
+    }
+
     //Gestionar peticiones
     this.servidorWS = function(){
         let cli = this;
