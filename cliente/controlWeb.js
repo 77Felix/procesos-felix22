@@ -11,34 +11,35 @@ function ControlWeb(){
 		}
 	}
 	this.mostrarAgregarUsuario=function(){
-		// let cadena= '<div class="row" id="mAU">';//'<form class="form-row needs-validation"  id="mAJ">';
-		// cadena=cadena+"<div class='col'>";
-		// cadena=cadena+'<div class="row"><div class="col"><h2>El juego indefinido</h2></div></div>';
-		// cadena=cadena+'<div class="row">';
-		// cadena=cadena+'<div class="col">'
-  //       cadena=cadena+'<input type="text" class="form-control mb-2 mr-sm-2" id="usr" placeholder="Introduce tu nick (max 6 letras)" required></div>';
-  //       cadena=cadena+'<div class="col">';
-  //       cadena=cadena+'<button id="btnAU" class="btn btn-primary mb-2 mr-sm-2">Iniciar sesión</button>';
-  //       //cadena=cadena+'<a href="/auth/google" class="btn btn-primary mb-2 mr-sm-2">Accede con Google</a>';
-  //       cadena=cadena+'</div>'; //' </form>';
-  //       cadena=cadena+'<div id="nota"></div>';
-  //       cadena=cadena+'</div></div></div>';
-		$('#mH').remove();
-		$('#mAU').remove();
-  		let cadena= '<div id="mAU">';
+		let cadena = '<div class="row" id="mAU">';//'<form class="form-row needs-validation"  id="mAJ">';
+		cadena=cadena+"<div class='col'>";
+		cadena=cadena+'<div class="row"><div class="col"><h2> Batalla naval </h2></div></div>';
+		cadena=cadena+'<div class="row">';
+		cadena=cadena+'<div class="col">'
+  		cadena=cadena+'<input type="text" class="form-control mb-2 mr-sm-2" id="usr" placeholder="Introduce tu nick (max 6 letras)" required></div>';
+    	cadena=cadena+'<div class="col">';
+        cadena=cadena+'<button id="btnAU" class="btn btn-primary mb-2 mr-sm-2">Iniciar sesión</button>';
+        cadena=cadena+'<a href="/auth/google" class="btn btn-primary mb-2 mr-sm-2">Accede con Google</a>';
+        cadena=cadena+'</div>'; //' </form>';
+        cadena=cadena+'<div id="nota"></div>';
+        cadena=cadena+'</div></div></div>';
+		
+		//$('#mH').remove();
+		//$('#mAU').remove();
+  		//let cadena= '<div id="mAU">';
   		//cadena=cadena+"<h2>Batalla naval</h2>";
   		//cadena=cadena+"<h6>La última sensación en juegos Web</h6>";
   		//cadena=cadena+'<p><img src="cliente/img/wisconsin.webp" class="rounded" style="width:30%;" alt="Wisconsin">';
-  		cadena=cadena+'<div class="card" style="width:75%;">';
-		cadena=cadena+'<div class="card-body">';
-		cadena=cadena+'<h2 class="card-title">Batalla naval</h2>';
-		cadena=cadena+'<p class="card-text">Juego para 2 jugadores. Introduce un nick</p>';
+  		//cadena=cadena+'<div class="card" style="width:75%;">';
+		//cadena=cadena+'<div class="card-body">';
+		//cadena=cadena+'<h2 class="card-title">Batalla naval</h2>';
+		//cadena=cadena+'<p class="card-text">Juego para 2 jugadores. Introduce un nick</p>';
 		//cadena=cadena+'<a href="#" class="btn btn-primary">Ver resultados</a>';
-		cadena=cadena+'<input type="text" class="form-control mb-2 mr-sm-2" id="usr" style="width:100%;" placeholder="Introduce un nick (max 6 letras)" required>';
-  		cadena=cadena+'<button id="btnAU" class="btn btn-primary mb-2 mr-sm-2">Entrar</button>';
-		cadena=cadena+'</div>';
-		cadena=cadena+'<img class="card-img-bottom" src="cliente/img/armada.webp" alt="imagen barco" style="width:100%">'
-		cadena=cadena+'</div>'
+		//cadena=cadena+'<input type="text" class="form-control mb-2 mr-sm-2" id="usr" style="width:100%;" placeholder="Introduce un nick (max 6 letras)" required>';
+  		//cadena=cadena+'<button id="btnAU" class="btn btn-primary mb-2 mr-sm-2">Entrar</button>';
+		//cadena=cadena+'</div>';
+		//cadena=cadena+'<img class="card-img-bottom" src="cliente/img/armada.webp" alt="imagen barco" style="width:100%">'
+		//cadena=cadena+'</div>'
   		//cadena=cadena+'<p><img src="cliente/img/barco.jpg" class="rounded" style="width:40%;" alt="Wisconsin"></p>';
       	//cadena=cadena+'<h6>Accede al juego con sólo introducir un nick</h6>';  		
 		$("#agregarUsuario").append(cadena);     
