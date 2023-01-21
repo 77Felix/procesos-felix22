@@ -12,7 +12,9 @@ function ServidorWS(){
         socket.broadcast.emit(mens,datos);
     }
 
-
+    this.enviarRestoMiembrosPartida = function(socket,codigo,mens,datos){
+        socket.broadcast.to(codigo).emit(mens,datos);
+    }
 
 
     //GESTIONAR PETICIONES
@@ -28,40 +30,70 @@ function ServidorWS(){
                 let codigoStr = res.codigo.toString();
                 socket.join(codigoStr);
                 //cli.enviarAlRemitente(socket,"partidaCreada",res);
-                cli.enviarATodosEnPartida(io,codigoStr,"partidaCreada",res)
+                cli.enviarAlRemitente(io,codigoStr,"partidaCreada",res)
 	  			let lista=juego.obtenerPartidasDisponibles();
 	  			cli.enviarATodos(socket,"actualizarListaPartidas",lista);
             });
 
             socket.on("unirseAPartida", function(nick, codigo){
+			  	let res = juego.jugadorSeUneAPartida(nick,codigo);
                 let codigoStr=codigo.toString();
 			  	socket.join(codigoStr);
-			  	let res = juego.jugadorSeUneAPartida(nick,codigo);		  	
-			  	cli.enviarAlRemitente(socket,"unidoAPartida",res);		  	
-			  	let partida=juego.obtenerPartida(codigo);
 
-                if (partida.esJugando()){
-                    cli.enviarATodosEnPartida(io,codigoStr,"aJugar",{});
+                let lista = juego.obtenerPartidasDisponibles();
+                cli.enviarATodos(socket,"actualizarListaPartidas",lista);
+			  	cli.enviarAlRemitente(socket,"unidoAPartida",res);
+
+			  	let partida=juego.obtenerPartida(codigo);
+                if (partida.esDesplegando()){
+                    let user = juego.obtenerUsuario(nick);
+                    let flota = us.obtenerFlota();
+                    let res = {};
+                    res.flota = flota;
+                    cli.enviarATodosEnPartida(io,codigoStr,"faseDesplegando",res);
                 }
             });
 
             socket.on("abandonarPartida", function(nick, codigo){
-                let codigoStr = codigo.toString();
+                let user = juego.obtenerUsuario(nick);
+                if(user){
+                    let codigoStr=codigo.toString();
+                    juego.jugadorAbandona(nick, codigo);
+                    cli.enviarATodosEnPartida(io,codigoStr,"jugadorAbandona",nick);
+                }
 
+                let lista = juego.obtenerPartidasDisponibles();
+                cli.enviarATodos(socket,"actualizarListaPartidas",lista);
             });
 
-            socket.on("usuarioSale", function(nick){
+            socket.on("salir", function(nick, codigo){
+                if(codigo){
+                    let user = juego.obtenerUsuario(nick);
+                    if(user){
+                        let codigoStr = codigo.toString();
+                        console.log("Salir del servidor");
+                        juego.jugadorAbandona(nick, codigo);
+                        console.log(user.partida.fase);
+                        cli.enviarAlRestoPartida(socket,codigoStr,"jugadorAbandona",nick);
+
+                        let lista = juego.obtenerPartidasDisponibles();
+                        cli.enviarATodos(socket,"actualizarListaPartidas",lista);
+                    }
+                }
+            })
+
+            /*socket.on("usuarioSale", function(nick){
                 socket.disconnect();
-            });
+            });*/
 
             socket.on("colocarBarco", function(nick, nombre, x, y){
                 let us = juego.obtenerUsuario(nick);
                 if (us){
-                    us.colocarBarco(nombre, x, y);
+                    let colocado = us.colocarBarco(nombre, x, y);
                     //let estado = us.flota[nombre].desplegado;
-                    let desplegado = us.obtenerBarcoDesplegado(nombre);
-                    let res = {barco: nombre, colocado: desplegado};
-                    cli.enviarAlRemitente(socket, "barcoColocado", res);
+                    //let desplegado = us.obtenerBarcoDesplegado(nombre);
+                    //let res = {barco: nombre, colocado: desplegado};
+                    cli.enviarAlRemitente(socket, "barcoColocado", {nombre, x, y, colocado});
                 }
             });
 
@@ -69,35 +101,45 @@ function ServidorWS(){
                 let us = juego.obtenerUsuario(nick);
                 if (us){
                     us.barcosDesplegados();
-                    let partida = us.partida;
-                    if (partida.esJugando()){ // fase == jugando
-                        let res = {fase: partida.fase, turno: partida.turno.nick.nombre};
-                        let codigoStr = partida.codigo.toString();
-                        cli.enviarAlRemitente(io, codigoStr, "aJugar", res);
+                    //let partida = us.partida;
+                    if (us.partida.esJugando()){ // fase == jugando
+                        let res = {fase: us.partida.fase, turno: us.partida.turno.nick};
+                        let codigoStr = us.partida.codigo.toString();
+                        cli.enviarATodosEnPartida(io, codigoStr, "aJugar", res);
                     }
-                    else {
-                        cli.enviarAlRemitente(socket, "esperandoRival");
-                    }
+                    /*else {
+                        cli.enviarATodosEnPartida(socket, "esperandoRival");
+                    }*/
                 }
             });
 
             socket.on("disparar", function(nick, x, y){
                 let us = juego.obtenerUsuario(nick);
-                let partida = us.partida;
-                
-                if (us && partida.esJugando() && partida.turno.nick == nick){
+
+                //if (us && us.partida.esJugando() && us.partida.turno.nick == nick)
+                if(us && us.partida.turno == us && us.partida.esJugando()){
+                    let codigoStr = us.partida.codigo.toString();
                     us.disparar(x, y);
+
                     //Una vez se ha disparado, hay que mirar el tableroRival
                     let estado = us.obtenerEstadoMarcado(x, y);
-                    let partida = us.partida;
-                    let codigoStr = partida.codigo.toString();
-                    let res = {impacto: estado, x:x, y:y, turno: partida.turno.nick};
-
-                    cli.enviarATodosEnPartida(io, codigoStr, "disparo", res);
+                    console.log(estado);
                     
-                    if(partida.esFinal()){
+                    //let res = {impacto: estado, x:x, y:y, turno: partida.turno.nick};
+                    
+                    if(us.partida.esFinal()){
                         cli.enviarATodosEnPartida(io, codigoStr, "finPartida", res);
                     }
+                    else {
+                        let res = {"turno": us.partida.turno.nick};
+                        let data = {"x":x, "y":y, "impacto":estado, "turno":us.partida.turno.nick, "atacante":us.nick};
+
+                        cli.enviarATodosEnPartida(io, codigoStr, "disparo", data);
+                        cli.enviarATodosEnPartida(io, codigoStr, "turnoUsuario", res);
+                    }
+                }
+                else {
+                    cli.enviarAlRemitente(socket,"turnoIncorrecto",{});
                 }
             });
         });

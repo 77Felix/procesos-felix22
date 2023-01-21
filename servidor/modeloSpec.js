@@ -8,6 +8,7 @@ describe("El juego...", function () {
     miJuego = new modelo.Juego(true);
     miJuego.agregarUsuario("pepe");
     miJuego.agregarUsuario("luis");
+
     let res = miJuego.jugadorCreaPartida("pepe");
     miJuego.jugadorSeUneAPartida("luis", res.codigo);
     us1 = miJuego.obtenerUsuario("pepe");
@@ -27,9 +28,17 @@ describe("El juego...", function () {
     //comprobar que la partida esta en fase jugando
   });
 
-  it("comprobamos que luis y pepe están en la partida", function () {
-    expect(partida.estoy("pepe")).toEqual(true);
-    expect(partida.estoy("luis")).toEqual(true);
+  it("comprobamos que luis crea la partida, y luis se una a ella", function () {
+    let codigo=us1.crearPartida();
+    let partida=miJuego.partidas[codigo];
+    usr2.unirseAPartida();
+    expect(partida.jugadores.length).toEqual(2);
+    expect(partida.jugadores[1].nick).toEqual(us2.nick);
+  });
+
+  it("comprobamos los usuarios que hay en la partida", function(){
+    expect(partida.estoy(us1.nick));
+    expect(partida.estoy(us2.nick));
   });
 
   it("los dos jugadores tienen tablero propio y rival", function () {
@@ -38,31 +47,29 @@ describe("El juego...", function () {
     expect(us1.tableroRival).toBeDefined();
     expect(us2.tableroRival).toBeDefined();
 
-    expect(us1.tableroPropio.casillas.length).toEqual(5);
-    expect(us2.tableroPropio.casillas.length).toEqual(5);
+    expect(us1.tableroPropio.casillas.length).toEqual(10);
+    expect(us2.tableroPropio.casillas.length).toEqual(10);
 
     //habría que recorrer las 5 columnas
-    for (x = 0; x < 5; x++) {
-      expect(us1.tableroPropio.casillas[x].length).toEqual(5);
+    for (x = 0; x < 10; x++) {
+      for(y = 0; x < 10; y++){
+        expect(us1.tableroPropio.casillas[i][j].contiene.esAgua()).toEqual(true);
+      }
     }
-    //  expect(us2.tableroPropio.casillas[0].length).toEqual(5);
-
-    //habría que recorrer todo el tablero
-    expect(us1.tableroPropio.casillas[0][0].contiene.esAgua()).toEqual(true);
   });
 
   it("los dos jugadores tienen flota (2 barcos, tam 2 y 4)", function () {
     expect(us1.flota).toBeDefined();
     expect(us2.flota).toBeDefined();
 
-    expect(Object.keys(us1.flota).length).toEqual(5);
-    expect(Object.keys(us2.flota).length).toEqual(5);
+    expect(Object.keys(us1.flota).length).toEqual(2);
+    expect(Object.keys(us2.flota).length).toEqual(2);
 
-    expect(Object.keys(["b1-1"]).tam).toEqual(1);
-    expect(Object.keys(["b2-1"]).tam).toEqual(1);
+    //expect(Object.keys(["b1-1"]).tam).toEqual(1);
+    //expect(Object.keys(["b2-1"]).tam).toEqual(1);
     expect(Object.keys(["b2"]).tam).toEqual(2);
     expect(Object.keys(["b4"]).tam).toEqual(4);
-    expect(Object.keys(["b5"]).tam).toEqual(5);
+    //expect(Object.keys(["b5"]).tam).toEqual(5);
   });
 
   it("la partida está en fase desplegando", function () {
@@ -74,15 +81,15 @@ describe("El juego...", function () {
     beforeEach(function () {
       us1.colocarBarco("b2", 0, 0); // 0,0 1,0
       us1.colocarBarco("b4", 0, 1); // 0,1 1,1 2,1 3,1
-      us1.colocarBarco("b1-1", 0 , 2);
-      us1.colocarBarco("b2-1", 0 , 3);
-      us1.colocarBarco("b5", 0 , 4);
+      //us1.colocarBarco("b1-1", 0 , 2);
+      //us1.colocarBarco("b2-1", 0 , 3);
+      //us1.colocarBarco("b5", 0 , 4);
       us1.barcosDesplegados();
       us2.colocarBarco("b2", 0, 0); // 0,0 1,0
       us2.colocarBarco("b4", 0, 1); // 0,1 1,1 2,1 3,1
-      us2.colocarBarco("b1-1", 0 , 2);
-      us2.colocarBarco("b2-1", 0 , 3);
-      us2.colocarBarco("b5", 0 , 4);
+      //us2.colocarBarco("b1-1", 0 , 2);
+      //us2.colocarBarco("b2-1", 0 , 3);
+      //us2.colocarBarco("b5", 0 , 4);
       us2.barcosDesplegados();
     });
 
@@ -95,9 +102,11 @@ describe("El juego...", function () {
       expect(partida.esJugando()).toEqual(true);
     });
 
-    it("Comprobar jugada que Pepe gana", function () {
+    it("comprobar que el turno es de Pepe", function(){
       expect(partida.turno.nick).toEqual("pepe");
+    })
 
+    it("Comprobar jugada que Pepe gana", function () {
       expect(us2.obtenerEstadoBarco("b2")).toEqual("intacto");
       //expect(us2.flota["b2"].estado).toEqual("intacto");
       us1.disparar(0, 0);
@@ -118,6 +127,7 @@ describe("El juego...", function () {
       expect(us2.flota["b4"].estado).toEqual("hundido");
 
       expect(partida.esFinal()).toEqual(true);
+      //expect(partida.fase).toEqual("final");
       expect(us2.flotaHundida()).toEqual(true);
       expect(us1.flotaHundida()).toEqual(false);
     });
