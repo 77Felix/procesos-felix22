@@ -43,22 +43,24 @@ function ClienteWS(){
 		this.socket.on("partidaCreada",function(data){
 			console.log(data);
 			if (data.codigo!=-1){
-				console.log("Usuario "+rest.nick+" crea partida codigo: "+data.codigo)
-				iu.mostrarCodigo(data.codigo);
+				console.log("Usuario "+rest.nick+" crea partida codigo: "+data.codigo);
+				iu.mostrarAbandonarPartida();
+				//iu.mostrarCodigo(data.codigo);
 				cli.codigo=data.codigo;
 			}
 			else{
 				console.log("No se ha podido crear partida");
-				iu.mostrarModal("No se ha podido crear partida");
+				//iu.mostrarModal("No se ha podido crear partida");
 				//iu.mostrarCrearPartida();
-				rest.comprobarUsuario();
+				//rest.comprobarUsuario();
 			}
 		});
 
 		this.socket.on("unidoAPartida",function(data){
 			if (data.codigo!=-1){
 				console.log("Usuario "+rest.nick+" se une a partida codigo: "+data.codigo);
-				iu.mostrarCodigo(data.codigo);
+				iu.mostrarAbandonarPartida();
+				//iu.mostrarCodigo(data.codigo);
 				cli.codigo=data.codigo;				
 			}
 			else{
@@ -72,28 +74,22 @@ function ClienteWS(){
 			}
 		});
 
-		this.socket.on("faseDesplegando",function(data){
-			tablero.flota=data.flota;
-			//tablero.mostrar(true);
-			tablero.elementosGrid();
-			tablero.mostrarFlota();//data.flota);
-			//iu.quitarER();  --> Él lo tiene puesto, pero no sé que es
-			console.log("Ya puedes desplegar la flota");
-		})
-
-		this.socket.on("aJugar",function(){
-			iu.mostrarModal("A jugar!");			
-			//tablero.mostrar(true);
+		this.socket.on("aColocar", function(){
+			iu.mostrarModal("Puede colocar los barcos!!!");
 		});
 
-		this.socket.on("jugadorAbandona",function(data){
-			iu.mostrarModal("Jugador "+data.nick+" abandona");
-			iu.finPartida();
+		this.socket.on("aJugar",function(res){
+			iu.mostrarModal("A jugar!!! Turno de: " +res.turno);			
+			//tablero.mostrar(true);
+			let data = {"turno": res.turno, "nick": rest.nick};
+			iu.mostrarTurno(data);
 		});
 
 		this.socket.on("barcoColocado",function(res){
-			console.log("Barco "+res.barco+" colocado?: "+res.colocado);
-			let barco=tablero.flota[res.barco];
+			console.log("Barco "+res.nombre+" colocado?: "+res.colocado);
+			let barco=tablero.flota[res.nombre];
+			console.log(barco);
+
 			if (res.colocado){
 				tablero.terminarDeColocarBarco(barco,res.x,res.y);
 				cli.barcosDesplegados();
@@ -103,14 +99,18 @@ function ClienteWS(){
 			}
 		});
 
-		this.socket.on("aJugar",function(res){
-			if (res.fase=="jugando"){
-				console.log("A jugar, le toca a: "+res.turno);
-			}
+		this.socket.on("faseDesplegando",function(data){
+			tablero.flota=data.flota;
+			//tablero.mostrar(true);
+			tablero.elementosGrid();
+			tablero.mostrarFlota();//data.flota);
+			//iu.quitarER();  --> Él lo tiene puesto, pero no sé que es
+			console.log("Ya puedes desplegar la flota");
 		});
 
-		this.socket.on("esperandoRival",function(){
-			console.log("Esperando rival");
+		this.socket.on("jugadorAbandona",function(data){
+			iu.mostrarModal("Jugador "+data.nick+" ha abandonado la partida.");
+			iu.finPartida();
 		});
 
 		this.socket.on("disparo",function(res){
@@ -124,15 +124,29 @@ function ClienteWS(){
 			}
 		});
 
-		this.socket.on("info",function(info){
-			console.log(info);
+		this.socket.on("turnoUsuario", function(res){
+			let data = {"turno": res.turno, "nick": rest.nick};
+			iu.mostrarTurno(data);
+		});
+
+		this.socket.on("turnoIncorrecto", function(){
+			console.log("Espere su turno");
+			iu.mostrarTurno("Todavía no es su turno");
 		});
 
 		this.socket.on("finPartida",function(res){
 			console.log("Fin de la partida");
-			console.log("Ganador: "+res.turno);
+			console.log("Ganador: " +res.turno);
 			iu.mostrarModal("Fin de la partida. Ganador: "+res.turno);
 			iu.finPartida();
+		});
+
+		this.socket.on("esperandoRival",function(){
+			console.log("Esperando rival");
+		});
+
+		this.socket.on("info",function(info){
+			console.log(info);
 		});
 	}
 }

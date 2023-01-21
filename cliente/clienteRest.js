@@ -40,50 +40,56 @@ function ClienteRest(){
 		});
 	}
 
-	// this.crearPartida=function(){
-	// 	let cli=this;
-	// 	let nick=cli.nick;
-	// 	$.getJSON("/crearPartida/"+nick,function(data){
-	// 		console.log(data);
-	// 		if (data.codigo!=-1){
-	// 			console.log("Usuario "+nick+" crea partida codigo: "+data.codigo)
+	this.crearPartida=function(){
+		let cli=this;
+	 	let nick=cli.nick;
+	 	$.getJSON("/crearPartida/"+nick,function(data){
+	 		console.log(data);
+	 		if (data.codigo!=-1){
+	 			console.log("Usuario "+nick+" crea partida codigo: "+data.codigo)
+				iu.mostrarAbandonarPartida();
 	// 			iu.mostrarCodigo(data.codigo);
 	// 			//ws.nick=data.nick;
 	// 			//$.cookie("nick",ws.nick);
 	// 			//iu.mostrarHome(data);
-	// 		}
-	// 		else{
-	// 			console.log("No se ha podido crear partida")
+	 		}
+	 		else{
+	 			console.log("No se ha podido crear partida")
 	// 			//iu.mostrarModal("El nick ya está en uso");
 	// 			//iu.mostrarAgregarJugador();
-	// 		}
-	// 	});
-	// }
-	// this.unirseAPartida=function(codigo){
-	// 	let cli=this;
-	// 	$.getJSON("/unirseAPartida/"+cli.nick+"/"+codigo,function(data){
-	// 		if (data.codigo!=-1){
-	// 			console.log("Usuario "+cli.nick+" se une a partida codigo: "+data.codigo);
-	// 			iu.mostrarCodigo(data.codigo);
-	// 		}
-	// 		else{
-	// 			console.log("No se ha podido unir a partida");
+	 		}
+	 	});
+	}
+
+	this.unirseAPartida=function(codigo){
+	 	let cli=this;
+	 	$.getJSON("/unirseAPartida/"+cli.nick+"/"+codigo,function(data){
+	 		if (data.codigo!=-1){
+	 			console.log("Usuario "+cli.nick+" se une a partida codigo: "+data.codigo);
+	 			iu.mostrarCodigo(data.codigo);
+	 		}
+	 		else{
+	 			console.log("No se ha podido unir a partida");
 	// 			iu.mostrarModal("No se ha podido unir a partida");
-	// 		}
-	// 	});
-	// }
+	 		}
+	 	});
+	}
+
 	this.obtenerListaPartidas=function(){
+		//let cli = this;
 		$.getJSON("/obtenerPartidas",function(lista){
 			console.log(lista);
 			iu.mostrarListaDePartidas(lista);
 		});
 	}
+
 	this.obtenerListaPartidasDisponibles=function(){
 		$.getJSON("/obtenerPartidasDisponibles",function(lista){
-			console.log(lista);
+			//console.log(lista);
 			iu.mostrarListaDePartidasDisponibles(lista);
 		});
 	}
+	
 	this.usuarioSale=function(){
 		let nick=this.nick;
 		$.getJSON("/salir/"+nick,function(){
