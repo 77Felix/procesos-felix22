@@ -1,15 +1,39 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
-html, body {
-	width: 100%;
-	padding: 0;
-	margin: 0;
-	background-color: #ddd;
-	min-width: 860px;
+html {
+	height: 100%;
 }
-h1, h2, h3, h4, h5, h6, p, li, span {
-	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+
+@keyframes pan {
+	100% {background-position: 15% 50%;}
+}
+
+body {
+	display: grid;
+	place-items: center;
+	padding: 0 24px;
+	margin: 0;
+	background-image: url("../img/fondo.svg");
+	background-repeat: repeat;
+	background-size: cover;
+	animation: pan 6s infinite alternate linear;
+}
+
+@media(width >= 500px){
+	body{
+		padding: 0;
+	}
+}
+
+h1, h2, h3, h4, h5, h6, span {
+	font-family: 'Arial';
+	color: #ffffff;
+}
+
+p, li{
+	font-family: 'Arial';
 	color: #222222;
 }
+
 a {
 	color: #222222;
 	font-weight: bold;
@@ -22,8 +46,48 @@ div {
 	margin: 0;
 }
 
-button {
-	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+.invitado-card{
+	width: 100%;
+    padding: 30px 30px 44px;
+    border-radius: 24px;
+    background: #ffffff;
+    text-align: center;
+}
+
+@media (width >= 500px) {
+    .invitado-card {
+        margin: 0;
+        width:400px;
+    }
+}
+
+.invitado-card > h3 {
+    margin: 0 0 30px;
+    font-weight: 500;
+    font-size: 20px;
+    color: #222222;
+}
+
+.invitado-form {
+    width: 100%;
+    margin: 0;
+    display: grid;
+    gap: 16px;
+}
+
+.invitado-form > a { color: #216ce7; }
+.invitado-form > #nota{ color: #ed1313; }
+
+.invitado-form > input{
+    width: 100%;
+    height: 56px;
+    padding: 0 16px;
+    border-radius: 8px;
+    border:2px solid #dad9d9;
+}
+
+.btn {
+	font-family: 'Times New Roman';
 	font-size: 1.2em;
 	color: #EEEEEE;
 	background-color: #25567B;
@@ -32,13 +96,32 @@ button {
 	padding: 10px;
 	border-radius: 5px;
 }
-	button:hover {
+	.btn:hover {
 		cursor: pointer;
 		background-color: #ffffff;
 	}
-	button:active {
+	.btn:active {
 		background-color: #99C2E1;
 	}
+
+.modal-title {color:#222222;}
+
+.turno-form {
+    border-radius: 24px;
+    background: #ffffff;
+    text-align: center;
+    border-color: #222222;
+}
+
+#codigoPartida {
+    height: 40px;
+    border-radius: 8px;
+    border:2px solid #dad9d9;
+    background: #ffffff;
+    border-color: #222222;
+	margin: 1em auto 0 auto;
+}
+
 	#start-game,
 	#place-randomly,
 	#restart-game {
@@ -80,19 +163,19 @@ button {
 		text-align: left;
 		margin: 0 auto 3em auto;
 	}
-/*
+
 .container {
 	width: 870px;
 	text-align: center;
 	margin: 20px auto 100px auto;
 }
-*/
+
 .game-container {
 	position: relative;
 }
 	#roster-sidebar, #stats-sidebar, #restart-sidebar {
-		width: 100px;
-		padding: 10px;
+		width: 150px;
+		padding: 20px;
 		margin: 0;
 		background-color: #EEEEEE;
 		position: absolute;
@@ -102,10 +185,10 @@ button {
 		border-radius: 5px;
 	}
 	#roster-sidebar, #restart-sidebar {
-		left: -120px;
+		left: -200px;
 	}
 	#stats-sidebar {
-		right: -100px;
+		right: -200px;
 	}
 		#roster-sidebar h2, #stats-sidebar h2, #restart-sidebar h2 {
 			margin: 0 0 1em 0;
@@ -206,24 +289,28 @@ button {
 			cursor: url('../img/crosshair.png') 16 16, crosshair;
 		}
 	.grid-ship, .human-player .grid-ship:hover {
-		background-color: #808080;
+		background-color: #1b04b2;
 	}
 	.grid-agua, .grid-agua:hover, .human-player .grid-agua:hover {
 		background-color: #FFFFFF;
-		background-image: url('../img/cross-icon.png'); /* Fallback */
-		background-image: url('../img/cross-icon.svg');
+		background-image: url('../img/agua.png');  /* Fallback */
+		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
 	}
 	.grid-tocado, .grid-tocado:hover, .human-player .grid-tocado:hover {
-		background-color: #F60018;
-		background-image: url('../img/cross-icon.png'); /* Fallback */
-		background-image: url('../img/cross-icon.svg');
+		background-color: #f5ee36;
+		background-image: url('../img/barcoTocado.png'); /* Fallback */
+		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
 	}
 	.grid-hundido, .grid-hundido:hover, .human-player .grid-hundido:hover {
 		background-color: #222222;
+		background-image: url('../img/barcoHundido.png'); /* Fallback */
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 
 .highlight {

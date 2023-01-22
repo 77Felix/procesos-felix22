@@ -44,7 +44,7 @@ function ClienteWS(){
 			console.log(data);
 			if (data.codigo!=-1){
 				console.log("Usuario "+rest.nick+" crea partida codigo: "+data.codigo);
-				iu.mostrarAbandonarPartida();
+				iu.mostrarAbandonarPartida(data.codigo);
 				//iu.mostrarCodigo(data.codigo);
 				cli.codigo=data.codigo;
 			}
@@ -59,7 +59,7 @@ function ClienteWS(){
 		this.socket.on("unidoAPartida",function(data){
 			if (data.codigo!=-1){
 				console.log("Usuario "+rest.nick+" se une a partida codigo: "+data.codigo);
-				iu.mostrarAbandonarPartida();
+				iu.mostrarAbandonarPartida(data.codigo);
 				//iu.mostrarCodigo(data.codigo);
 				cli.codigo=data.codigo;				
 			}
@@ -67,6 +67,11 @@ function ClienteWS(){
 				console.log("No se ha podido unir a partida");
 			}
 		});
+
+		this.socket.on("partidaNoEncontrada", function(){
+			iu.mostrarHome();
+			iu.mostrarModal("No se ha encontrado la partida");
+		})
 
 		this.socket.on("actualizarListaPartidas",function(lista){
 			if (!cli.codigo){
@@ -109,7 +114,7 @@ function ClienteWS(){
 		});
 
 		this.socket.on("jugadorAbandona",function(data){
-			iu.mostrarModal("Jugador "+data.nick+" ha abandonado la partida.");
+			iu.mostrarModal("Jugador "+data+" ha abandonado la partida.");
 			iu.finPartida();
 		});
 

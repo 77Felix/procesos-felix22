@@ -112,10 +112,12 @@ function ControlWeb(){
 		cadena=cadena+"</div></div>";
 		$('#agregarUsuario').append(cadena);
 		this.mostrarCrearPartida();
+		this.mostrarBuscarPartida();
 		rest.obtenerListaPartidasDisponibles();
 		$("#btnSalir").on("click",function(e){		
 			$("#mCP").remove();
 			$('#mLP').remove();
+			$('#mBP').remove();
 			$('#mH').remove();
 			cws.salir();
 			rest.usuarioSale();
@@ -126,11 +128,12 @@ function ControlWeb(){
 		});
 	}
 
-	this.salir=function(nick){
+	/*this.salir=function(nick){
 		iu.mostrarModal("Hasta la próxima");
 		$.removeCookie("nick");
 		iu.comprobarCookie();
-	}
+	}*/
+
 	this.mostrarCrearPartida=function(){
 		$('#mCP').remove();
 
@@ -145,6 +148,7 @@ function ControlWeb(){
         $('#crearPartida').append(cadena);
         $("#btnCP").on("click",function(e){		
 			$("#mCP").remove();
+			$('#mBP').remove();
 			$('#mLP').remove();
 			//rest.crearPartida();
 			cws.crearPartida();
@@ -152,11 +156,36 @@ function ControlWeb(){
 	}
 
 	this.mostrarAbandonarPartida = function(){
-		let cadena='<button id="btnAP" class="btn mb-2 mr-sm-2">Abandonar partida</button>';
-		cadena = cadena + '</div>';
+		//let cadena='<button id="btnAP" class="btn mb-2 mr-sm-2">Abandonar partida</button>';
+		//cadena = cadena + '</div>';
+		let cadena = "<h4>Código de la partida: "+codigo+"</h4>";
+		cadena = cadena + '<button id="btnAP" class="btn mb-2 mr-sm-2">Abandonar partida</button>';
+
 		$('#codigo').append(cadena);
 		$('#btnAP').on("click", function(e){
 			cws.abandonarPartida();
+		})
+	}
+
+	this.mostrarBuscarPartida = function(){
+		$('#mBP').remove();
+
+		let cadena='<div class="row col-8 " id="mBP"><input type="text" id="codigoPartida" placeholder="Código de Partida" required/>';
+		cadena = cadena + '<button id="btnBP" class="btn mb-2 mr-sm-2"> Buscar partida </button></div>';
+
+		$('#BuscarPartida').append(cadena);
+		$('#btnBP').on("click", function(e){
+			if($('#codigoPartida').val() == ''){
+				e.preventDefault();
+			}
+			else{
+				var codP=$('#codigoPartida').val();
+				$("#mCP").remove();
+				$('#mBP').remove();
+				$('#mLP').remove();
+
+				cws.unirseAPartida(codP);
+			}
 		})
 	}
 
@@ -181,6 +210,7 @@ function ControlWeb(){
 	        if (codigo){
 	            $('#mLP').remove();
 	            $('#mCP').remove();
+				$('#mBP').remove();
 	            //rest.unirseAPartida(codigo);
 	            cws.unirseAPartida(codigo);
 	        }
@@ -201,7 +231,7 @@ function ControlWeb(){
 		}
 		else{
 			let cadena='<form class="turno-form">';
-			cadena=cadena+'<h4 id="mT" style="color: #1ac600">Te toca disparar</h4>';
+			cadena=cadena+'<h4 id="mT" style="color: #1ac600">Es tu turno de disparar</h4>';
 			cadena=cadena+'</form>';
 			$('#mTurno').append(cadena);
 		}
