@@ -255,11 +255,12 @@ function Usuario(nick,juego){
 		return this.flota;
 	}
 
-	this.obtenerBarcoDesplegado = function(nombre, x) {
+	this.obtenerBarcoDesplegado = function(nombre, x){
         for (let key in this.flota) {
             if (this.flota[key].nombre == nombre) {
                 if (this.comprobarLimites(this.flota[key].tam, x)) {
-                    return this.flota[key];
+                    //return this.flota[key];
+					return true;
                 } else {
                     return false;
                 }
@@ -272,17 +273,21 @@ function Usuario(nick,juego){
 		this.juego.insertarLog(logs, callback);
 	}
 
+	this.flotasDesplegadas = function(){
+		return this.partida.flotasDesplegadas();
+	}
+
 	/*this.logAbandonarPartida = function(jugador,codigo){
 		this.juego.insertarLog({"operacion":"abandonarPartida", "usuario":jugador.nick, "codigo":codigo, "fecha":Date()}, function(){
 			console.log("Registro de log(abandonar) insertado");
 		})
 	};*/
 
-	/*this.logFinalizarPartida = function(perdedor,ganador,codigo){
+	this.logFinalizarPartida = function(perdedor,ganador,codigo){
 		this.juego.insertarLog({"operacion":"finalizarPartida", "perdedor":perdedor, "ganador":ganador, "codigo":codigo, "fecha":Date()}, function(){
 			console.log("Registro de log(finalizarPartida) insertado");
 		})
-	};*/
+	};
 }
 
 function Partida(codigo,usr){
@@ -546,7 +551,7 @@ function Casilla(x,y){
 	this.contiene=new Agua();
 }
 
-function Barco(nombre,tam){ //"b2" barco tamaño 2
+function Barco(nombre,tam, ori){ //"b2" barco tamaño 2
 	this.nombre = nombre;
 	this.tam = tam;
 	this.orientacion = ori; //horizontal, vertical...
