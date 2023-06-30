@@ -42,12 +42,6 @@ delete "/eliminarPartida"             -----> 'delete' para eliminar
 
 app.use(express.static(__dirname + "/"));
 
-app.get("/", function(request,response){
-	var contenido=fs.readFileSync(__dirname+"/cliente/index.html");
-	response.setHeader("Content-type","text/html");
-	response.send(contenido);
-});
-
 app.get("/auth/google",passport.authenticate('google', { scope: ['profile','email'] }));
 
 // "auth/github"
@@ -59,6 +53,15 @@ app.use(cookieSession({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get("/", function(request,response){
+	var contenido=fs.readFileSync(__dirname+"/cliente/index.html");
+	response.setHeader("Content-type","text/html");
+	response.send(contenido);
+});
+
+//Puede que haga falta modificarlo
+app.get("/auth/google",passport.authenticate('google', { scope: ['profile','email'] }));
 
 app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/fallo' }),

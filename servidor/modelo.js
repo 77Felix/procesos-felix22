@@ -11,7 +11,7 @@ function Juego(test){
 		if (!this.usuarios[nick]){
 			this.usuarios[nick]=new Usuario(nick,this);
 			this.insertarLog({"operacion":"inicioSesion", "usuario":nick, "fecha":Date()},function(){
-				console.log("Registro de log(iniciar sesion) insertado");
+				console.log("Registro de log (inicioSesión) insertado");
 			});
 			res={"nick":nick};
 			console.log("Nuevo usuario: "+nick);
@@ -28,7 +28,7 @@ function Juego(test){
 			this.finalizarPartida(nick);
 			this.eliminarUsuario(nick);
 			this.insertarLog({"operacion": "finSesion", "usuario": nick, "fecha": Date()}, function(){
-				console.log("Registro de log(salir) insertado");
+				console.log("Registro de log (cerrarSesión) insertado");
 			});
 		}
 	}
@@ -39,7 +39,7 @@ function Juego(test){
   		if (usr){
     		let codigo=usr.crearPartida();
 	    	//let codigo=this.crearPartida(usr);
-	    	res={codigo:codigo};
+	    	res={"codigo":codigo};
 	    }
     	return res;
 	}
@@ -56,16 +56,16 @@ function Juego(test){
 	}
 
 	this.obtenerUsuario=function(nick){
-		//if (this.usuarios[nick]){
-		return this.usuarios[nick];
-		//}
+		if (this.usuarios[nick]){
+			return this.usuarios[nick];
+		}
 	}
 
 	this.crearPartida=function(usr){
 		let codigo=Date.now();
 		console.log("Usuario " +usr.nick+ " crea partida " +codigo);
-		this.insertarLog({"operacion":"crearPartida", "propietario":usr.nick, "codigo":codigo, "fecha":Date()},function(){
-			console.log("Registro de log(crear partida) insertado");
+		this.insertarLog({"operacion":"crearPartida", "codigo":codigo, "propietario":usr.nick, "fecha":Date()},function(){
+			console.log("Registro de log (partidaCreada) insertado");
 		});
 		this.partidas[codigo]=new Partida(codigo,usr); 
 		return codigo;
@@ -76,9 +76,9 @@ function Juego(test){
 		if (this.partidas[codigo]){
 			res = this.partidas[codigo].agregarJugador(usr);
 
-			this.insertarLog({"operacion":"unirsePartida", "usuario":usr.nick, "codigoPartida":codigo, "fecha":Date()},function(){
+			/*this.insertarLog({"operacion":"unirsePartida", "usuario":usr.nick, "codigoPartida":codigo, "fecha":Date()},function(){
 				console.log("Registro de log(unirse a partida) insertado");
-			});
+			});*/
 		}
 		else{
 			console.log("La partida no existe");
@@ -98,7 +98,7 @@ function Juego(test){
 		let lista=[];
 		for (let key in this.partidas){
 			if (this.partidas[key].fase=="inicial"){
-				lista.push({"codigo": key, "owner": this.partidas[key].owner.nick, "fase":this.partidas[key].fase});
+				lista.push({"codigo": key, "owner": this.partidas[key].owner.nick});
 			}
 		}
 		return lista;
@@ -106,12 +106,12 @@ function Juego(test){
 
 	this.finalizarPartida=function(nick){
 		for (let key in this.partidas){
-			if ((this.partidas[key].fase == "inicial" || this.partidas[key].fase == "desplegando") && this.partidas[key].estoy(nick)) {
-			//if (this.partidas[key].fase=="inicial" && this.partidas[key].estoy(nick)){
+			//if ((this.partidas[key].fase == "inicial" || this.partidas[key].fase == "desplegando") && this.partidas[key].estoy(nick)) {
+			if (this.partidas[key].fase=="inicial" && this.partidas[key].estoy(nick)){
 				this.partidas[key].fase="final";
 
 				this.insertarLog({"operacion": "FinalizarPartida", "partida": this.partidas[key].codigo, "fecha": Date()}, function(){
-					console.log("Registro de log(finalizarPartida) insertado");
+					console.log("Registro de log (finalizarPartida) insertado");
 				});
 			
 				return this.partidas[key].codigo;
@@ -126,14 +126,14 @@ function Juego(test){
 	this.jugadorAbandona = function(nick, codigo){
 		if(this.partidas[codigo]){
 			this.partidas[codigo].fase = "final";		
-			this.insertarLog({"operacion": "jugadorAbandonaPartida", "propietario": usr.nick, "partida": this.partida, "fecha": Date()}, function(){
-				console.log("Registro de log(abandonarPartida) insertado");
+			this.insertarLog({"operacion": "jugadorAbandonaPartida", "usuario": nick, "partida": this.partida, "fecha": Date()}, function(){
+				console.log("Registro de log (abandonarPartida) insertado");
 			});
 		}
 	}
 
 	this.insertarLog = function(log, callback){
-		if(this.test == 'false'){
+		if(this.test == "false"){
 			this.cad.insertarLog(log, callback);
 		}
 	}
@@ -142,9 +142,9 @@ function Juego(test){
 		this.cad.obtenerLogs(callback);
 	}
 
-	if(test == 'false'){
-		this.cad.connect(function(db){
-			console.log("conectado a Atlas");
+	if(this.test == "false"){
+		this.cad.conectar(function(db){
+			console.log("Conectado a Atlas");
 		});
 	}
 }
@@ -178,12 +178,15 @@ function Usuario(nick,juego){
 		this.flota["b2"]=new Barco("b2",2, new Horizontal());
 		this.flota["b4"]=new Barco("b4",4, new Horizontal());
 		// otros barcos: 1, 3, 5,...
+		//this.flota["b1"]=new Barco("b1",1, new Horizontal());
+		//this.flota["b3"]=new Barco("b3",3, new Horizontal());
+		//this.flota["b5"]=new Barco("b5",5, new Horizontal());
 		//this.flota["b5"]=new Barco("b5",5);
 	}
 
-	this.obtenerFlota = function(){
+	/*this.obtenerFlota = function(){
 		return this.flota;
-	}
+	}*/
 
 	this.colocarBarco=function(nombre,x,y){
 		//comprobar fase
@@ -259,8 +262,8 @@ function Usuario(nick,juego){
         for (let key in this.flota) {
             if (this.flota[key].nombre == nombre) {
                 if (this.comprobarLimites(this.flota[key].tam, x)) {
-                    //return this.flota[key];
-					return true;
+                    return this.flota[key];
+					//return true;
                 } else {
                     return false;
                 }
@@ -488,17 +491,18 @@ function Tablero(size){
 		}
 	}
 
-	this.casillasLibresH = function (x, y, tam) {
-		for (i = x; i < tam; i++) {
+	/*this.casillasLibresH = function (x, y, tam) {
+		for (i = x; i < x+tam; i++) {
 			let contiene = this.casillas[i][y].contiene;
 			if (!contiene.esAgua()) {
+				console.log("No es agua.");
 				return false;
 			}
 		}
 		return true;
-	}
+	}*/
 
-	this.casillasLibresV = function (x, y, tam) {
+	/*this.casillasLibresV = function (x, y, tam) {
 		for (i = y; i < tam; i++) {
 			let contiene = this.casillas[x][i].contiene;
 			if (!contiene.esAgua()) {
@@ -506,20 +510,19 @@ function Tablero(size){
 			}
 		}
 		return true;
-	}
+	}*/
 
-	/*this.casillasLibres=function(x,y,tam){
-		if(x+tam > this.size){
-			return false;
-		}
-		for(i=0;i<tam;i++){
-			let contiene=this.casillas[i+x][y].contiene;
+	this.casillasLibres=function(x,y,tam){
+		for(i=x; i < x+tam ; i++){
+			let contiene=this.casillas[i][y].contiene;
 			if (!contiene.esAgua()){
+				console.log("No es agua.");
 				return false;
 			}
 		}
+
 		return true;
-	}*/
+	}
 
 	this.meDisparan=function(x,y){
 		return this.casillas[x][y].contiene.meDisparan(this, x, y);
@@ -530,11 +533,11 @@ function Tablero(size){
 	}
 
 	this.marcarEstado=function(estado,x,y){
-		this.casillas[x][y].contiene = estado;
+		this.casillas[x][y].contiene.estado = estado;
 	}
 
 	this.ponerAgua = function(x, y){
-		return this.casillas[x][y].contiene = new Agua();
+		this.casillas[x][y].contiene = new Agua();
 	}
 
 	this.esTablero = function(){
@@ -608,7 +611,7 @@ function Barco(nombre,tam, ori){ //"b2" barco tamaño 2
 	}
 
 	this.iniCasillas = function(){ //Ha cambiado todo esto al ser un array asociativo
-		for(i=0; i<tam; i++){
+		for(i=0; i<this.tam; i++){
 			this.casillas[i + this.x] = "intacto";
 		}
 	}
@@ -621,7 +624,7 @@ function Horizontal(){
 
 	this.colocarBarco = function(barco, tablero, x, y){
 		if(tablero.comprobarLimites(barco.tam, x)){
-			if(tablero.casillasLibresH(x, y, barco.tam)){
+			if(tablero.casillasLibres(x, y, barco.tam)){
 				//console.log(x,y,barco.tam);
 
 				for (let i = x; i < barco.tam + x; i++) {	
@@ -651,15 +654,19 @@ function Vertical(){
 
 	this.colocarBarco = function (barco, tablero, x, y){
         if (tablero.comprobarLimites(barco.tam, y)) {
-            if (tablero.casillasLibresV(x, y, barco.tam)) {
+            if (tablero.casillasLibres(x, y, barco.tam)) {
 				//console.log(x,y,barco.tam)
                     for (let i = y; i < barco.tam + y; i++) {	
                         tablero.casillas[x][i].contiene = barco;
                         console.log('Barco', barco.nombre, 'colocado en', x, i)
                     }
                 barco.posicion(x, y);
+				console.log(barco);
+				return true;
             }
         }
+
+		return false;
     }
 
 	this.esVertical = function(){
@@ -679,7 +686,7 @@ function Agua(){
 		return true;
 	}
 
-	this.meDisparan=function(){
+	this.meDisparan=function(tablero, x, y){
 		console.log("Agua");
 		return this.obtenerEstado();
 	}

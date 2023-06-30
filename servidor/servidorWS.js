@@ -28,23 +28,23 @@ function ServidorWS(){
                 //Si se quieren hacer partidas de más de 2 jugadores, hay que agregar la variable 'num' a esta función
                 let res = juego.jugadorCreaPartida(nick);
                 let codigoStr = res.codigo.toString();
-                socket.join(codigoStr);
+                    socket.join(codigoStr);
                 //cli.enviarAlRemitente(socket,"partidaCreada",res);
-                cli.enviarAlRemitente(io,codigoStr,"partidaCreada",res)
+                cli.enviarAlRemitente(socket,"partidaCreada",res)
 	  			let lista=juego.obtenerPartidasDisponibles();
 	  			cli.enviarATodos(socket,"actualizarListaPartidas",lista);
             });
 
             socket.on("unirseAPartida", function(nick, codigo){
                 let partida=juego.obtenerPartida(codigo);
-                if(partida && partida.fase =="inicial"){
+                if(partida && partida.fase =="inicial" && partida.owner.nick!=nick){
                     let res = juego.jugadorSeUneAPartida(nick,codigo);
                     let codigoStr=codigo.toString();
-			  	    socket.join(codigoStr);
+			  	        socket.join(codigoStr);
+                        let lista = juego.obtenerPartidasDisponibles();
 
-                    let lista = juego.obtenerPartidasDisponibles();
                     cli.enviarATodos(socket,"actualizarListaPartidas",lista);
-                    cli.enviarAlRemitente(socket,"unidoAPartida",res);
+                    cli.enviarAlRemitente(socket,"unirseAPartida",res);
 
                     if (partida.esDesplegando()){
                         let us = juego.obtenerUsuario(nick);
@@ -108,8 +108,8 @@ function ServidorWS(){
                     us.barcosDesplegados();
                     //let partida = us.partida;
                     if (us.partida.esJugando()){ // fase == jugando
-                        let res = {"fase": us.partida.fase, "turno": us.partida.turno.nick};
                         let codigoStr = us.partida.codigo.toString();
+                        let res = {"turno": us.partida.turno.nick};
                         cli.enviarATodosEnPartida(io, codigoStr, "aJugar", res);
                     }
                     /*else {

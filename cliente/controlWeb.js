@@ -22,7 +22,7 @@ function ControlWeb(){
 		//cadena=cadena+'<div class="col">'
   		//cadena=cadena+'<input type="text" class="form-control mb-2 mr-sm-2" id="usr" placeholder="Introduce tu nick (max 6 letras)" required></div>';
     	cadena=cadena+'<div class="col">';
-        cadena=cadena+'<button id="btnInv" class="btn mb-2 mr-sm-2">Iniciar sesión</button>';
+        cadena=cadena+'<button id="btnInv" class="btn mb-2 mr-sm-2">Iniciar como invitado</button>';
         cadena=cadena+'<a href="/auth/google" class="btn mb-2 mr-sm-2">Accede con Google</a>';
         cadena=cadena+'</div></div>'; //' </form>';
         //cadena=cadena+'<div id="nota"></div>';
@@ -78,17 +78,17 @@ function ControlWeb(){
     	cadena=cadena+'<form class="invitado-form">';
     	cadena=cadena+'<input type="text" id="usr" placeholder="Nombre de Usuario" required/>';
     	cadena=cadena+'<div id="nota"></div>';
-    	cadena=cadena+'<a href="/auth/google" style="color:#216ce7">Conectar con Google</a>';
+    	cadena=cadena+'<a href="/auth/google" style="color:#1356C3">Conectar con Google</a>';
     	cadena=cadena+'<button id="btnAU" class="btn">Empezar</button>';
     	cadena=cadena+'</form></div>';
 
 		$("#agregarUsuario").append(cadena);  
 
 		$("#btnAU").on("click",function(e){
-			if ($('#usr').val() === '' || $('#usr').val().length>6) {
+			if ($('#usr').val() === '' || $('#usr').val().length>15) {
 			    e.preventDefault();
 			    //$('#nota').append('Nick inválido');
-				$('#nota').append("Por favor, escriba un nick más corto (máx. 6 caracteres)");
+				$('#nota').append("Por favor, escriba un nick más corto (máx. 15 caracteres)");
 			}
 			else{
 				var nick=$('#usr').val();
@@ -107,7 +107,7 @@ function ControlWeb(){
 		let cadena="<div class='row' id='mH'>";
 		cadena=cadena+'<div class="col">';
 		cadena=cadena+"<h4>Bienvenido "+rest.nick+"</h4>";
-		cadena=cadena+'<button style="background-color: #dd1b09" id="btnSalir" class="btn mb-2 mr-sm-2">Cerrar sesión</button>';
+		cadena=cadena+'<button style="background-color: #EA2C1A" id="btnSalir" class="btn mb-2 mr-sm-2">Cerrar sesión</button>';
 		cadena=cadena+"<div id='codigo'></div>"
 		cadena=cadena+"</div></div>";
 		$('#agregarUsuario').append(cadena);
@@ -139,8 +139,8 @@ function ControlWeb(){
 
         let cadena='<div class="card" id="mCP">';
 	  	cadena=cadena+'<div class="card-body">'
-	    cadena=cadena+'<h4 style="color: #222222" class="card-title">Crear partida</h4>';
-	    cadena=cadena+'<p style="color: #222222" class="card-text">Crea una nueva partida y espera rival.</p>';
+	    cadena=cadena+'<h4 style="color: #171616" class="card-title">Crear partida</h4>';
+	    cadena=cadena+'<p style="color: #171616" class="card-text">Crea una nueva partida y espera rival.</p>';
 	    //cadena=cadena+'<a href="#" class="card-link">Card link</a>'	    
 	    cadena=cadena+'<button id="btnCP" class="btn mb-2 mr-sm-2">Crear partida</button>';
 	  	cadena=cadena+'</div>';
@@ -173,7 +173,7 @@ function ControlWeb(){
 		let cadena='<div class="row col-8 " id="mBP"><input type="text" id="codigoPartida" placeholder="Código de Partida" required/>';
 		cadena = cadena + '<button id="btnBP" class="btn mb-2 mr-sm-2"> Buscar partida </button></div>';
 
-		$('#BuscarPartida').append(cadena);
+		$('#buscarPartida').append(cadena);
 		$('#btnBP').on("click", function(e){
 			if($('#codigoPartida').val() == ''){
 				e.preventDefault();
@@ -225,13 +225,13 @@ function ControlWeb(){
 
 		if(data.turno != data.nick){
 			let cadena='<form class="turno-form w-75 mx-auto">';
-      		cadena=cadena+'<h4 id="mT" style="color: #9d0101">Turno del contrincante</h4>';
+      		cadena=cadena+'<h4 id="mT" style="color: #810101">Turno del contrincante</h4>';
       		cadena=cadena+'</form>';
 			$('#mTurno').append(cadena);
 		}
 		else{
 			let cadena='<form class="turno-form">';
-			cadena=cadena+'<h4 id="mT" style="color: #1ac600">Es tu turno de disparar</h4>';
+			cadena=cadena+'<h4 id="mT" style="color: #1DDA01">Es tu turno de disparar</h4>';
 			cadena=cadena+'</form>';
 			$('#mTurno').append(cadena);
 		}
@@ -253,7 +253,7 @@ function ControlWeb(){
 		iu.mostrarHome();
 	}
 
-	this.mostrarCodigo=function(codigo){
+	/*this.mostrarCodigo=function(codigo){
 		let cadena="<div id='mCodigoPartida'><p>Código de la partida: "+codigo+"</p>";
 		cadena=cadena+'<button id="btnAP" class="btn btn-primary mb-2 mr-sm-2">Abandonar partida</button>';
 		cadena=cadena+"</div>";
@@ -263,9 +263,9 @@ function ControlWeb(){
 			cws.abandonarPartida();
 			iu.finPartida();
 		});
-	}
+	}*/
 	
-	this.mostrarListaDePartidas=function(lista){
+	/*this.mostrarListaDePartidas=function(lista){
 		$('#mLP').remove();
 		let cadena="<div id='mLP'>";		
 		cadena=cadena+'<ul class="list-group">';
@@ -276,5 +276,5 @@ function ControlWeb(){
 		cadena=cadena+"</div>"
 		$('#listaPartidas').append(cadena);
 		
-	}
+	}*/
 }

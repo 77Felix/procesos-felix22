@@ -21,7 +21,7 @@ function ClienteWS(){
 	}
 
 	this.salir=function(){
-		this.socket.emit("usuarioSale",rest.nick);
+		this.socket.emit("salir",rest.nick, cws.codigo);
 	}
 
 	this.colocarBarco=function(nombre,x,y){
@@ -56,7 +56,7 @@ function ClienteWS(){
 			}
 		});
 
-		this.socket.on("unidoAPartida",function(data){
+		this.socket.on("unirseAPartida",function(data){
 			if (data.codigo!=-1){
 				console.log("Usuario "+rest.nick+" se une a partida codigo: "+data.codigo);
 				iu.mostrarAbandonarPartida(data.codigo);
@@ -146,12 +146,12 @@ function ClienteWS(){
 			iu.finPartida();
 		});
 
-		this.socket.on("esperandoRival",function(){
+		/*this.socket.on("esperandoRival",function(){
 			console.log("Esperando rival");
 		});
 
 		this.socket.on("info",function(info){
 			console.log(info);
-		});
+		});*/
 	}
 }

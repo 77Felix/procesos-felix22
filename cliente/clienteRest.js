@@ -76,7 +76,7 @@ function ClienteRest(){
 	}
 
 	this.obtenerListaPartidas=function(){
-		//let cli = this;
+		let cli = this;
 		$.getJSON("/obtenerPartidas",function(lista){
 			console.log(lista);
 			iu.mostrarListaDePartidas(lista);
@@ -84,6 +84,7 @@ function ClienteRest(){
 	}
 
 	this.obtenerListaPartidasDisponibles=function(){
+		let cli = this;
 		$.getJSON("/obtenerPartidasDisponibles",function(lista){
 			//console.log(lista);
 			iu.mostrarListaDePartidasDisponibles(lista);

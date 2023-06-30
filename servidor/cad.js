@@ -35,7 +35,8 @@ function Cad(){
     this.conectar = function(){
         let cad = this;
         //mongodb+srv://batalla:<password>@cluster0.oktgw1k.mongodb.net/?retryWrites=true&w=majority
-        mongo.connect("mongodb+srv://batalla:conocida@cluster0.oktgw1k.mongodb.net/?retryWrites=true&w=majority",{ useUnifiedTopology: true },function(err,database){
+        //mongo.connect("mongodb+srv://batalla:conocida@cluster0.oktgw1k.mongodb.net/?retryWrites=true&w=majority",{ useUnifiedTopology: true },function(err,database){
+        mongo.connect("mongodb+srv://batalla:conocida@micluster.flbs8js.mongodb.net/?retryWrites=true&w=majority",{ useUnifiedTopology: true },function(err,database){
             if(!err){
                 console.log("Conectado a MongoDB Atlas");
                 database.db("batalla").collection("logs",function(err,col){
@@ -44,7 +45,7 @@ function Cad(){
                     }
                     else{       
                         console.log("Tenemos la colección logs");                                 
-                        cad.partidas=col;                                                  
+                        cad.logs=col;                                                  
                     }
                 });
             }
@@ -54,7 +55,7 @@ function Cad(){
         });
     }
 
-    this.conectar();
+    //this.conectar();
 }
 
 module.exports.Cad = Cad;

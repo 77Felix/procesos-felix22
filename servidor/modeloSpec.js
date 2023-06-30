@@ -50,6 +50,9 @@ describe("El juego...", function () {
     expect(us1.tableroPropio.casillas.length).toEqual(10);
     expect(us2.tableroPropio.casillas.length).toEqual(10);
 
+    expect(us1.tableroPropio.casillas[0].length).toEqual(10);
+    expect(us2.tableroPropio.casillas[0].length).toEqual(10);
+
     //habría que recorrer las 10 columnas
     for (x = 0; x < 10; x++) {
       for(y = 0; y < 10; y++){

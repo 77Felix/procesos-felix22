@@ -5,15 +5,22 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title> Batalla naval </title>
 	<link rel="shortcut icon" href="./cliente/img/favicon.ico">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"><!--si-->
 	<script src="https://code.jquery.com/jquery-3.6.1.min.js" 
 		integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous">
-	</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	</script><!--si-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script><!--si-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script><!--si-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" 
+		integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" 
+		crossorigin="anonymous" referrerpolicy="no-referrer">
+	</script><!--si-->
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.min.css" 
+		integrity="sha512-f8mUMCRNrJxPBDzPJx3n+Y5TC5xp6SmStstEfgsDXZJTcxBakoB5hvPLhAfJKa9rCvH+n3xpJ2vQByxLk4WP2g==" 
+		crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.3/socket.io.js" 
 		integrity="sha512-iWPnCISAd/J+ZacwV2mbNLCaPGRrRo5OS81lKTVPtRg1wGTC20Cfmp5Us5RcbLv42QLdbAWl0MI57yox5VecQg==" 
-		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script><!--si-->
 
 	<script src="./cliente/clienteRest.js"></script> <!-- Aquí se pone el nombre del archivo tal y como es -->
 	<script src="./cliente/controlWeb.js"></script>
@@ -24,27 +31,74 @@
 
 	<style>
 		.card {
-		     border: 1px solid black;
+		    border: 1px solid rgb(45, 192, 89);
+			margin: 10 auto; 
+        	float: none;
+        	margin-bottom: 10px; 
 		 }
 	</style>
 </head>
 
 <body>
+	<nav class="navbar navbar-expand-lg bg-secondary navbar-dark">
+		<a class="navbar-brand" href="#">Hundir La Flota</a> 
+		<span id="agregarUsuario"></span>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav" id="listaNav">
+				<li class="nav-item" id="listaNav">
+					<a class="nav-link" href="#" id="btnSalir"> Cerrar Sesión </a>
+				</li>
+			</ul>
+		</div>
+	</nav>
 	<div class="container" style="margin-top:30px">
 		<div class="row">
 	    	<div class="col">
-	    		<div id="agregarUsuario"></div>
-	  			</div>
+				<div id="fondo"></div>
+				<div id="home">
+					<div class="row" id="mH">
+						<div class="col">
+							<h3> Bienvenido</h3>
+							<div id="codigo"></div>
+							<div id="turno"></div>
+						</div>
+					</div>
+				</div>
 	  		</div>
+		</div>
 		<div class="row">
 	   		<div class="col-4">
-	    		<div id="crearPartida"></div>
-	    		</div>
-	    	<div class="col-8">
-				<div id="buscarPartida"></div>
-	    		<div id="listaPartidas"></div>
-	    		</div>
-	  		</div>
+				<div id="crearPartida">
+					<div class="card" id="mCP">
+						<div class="card-body">
+							<h4 class="card-title">Crear Partida</h4>
+							<p class="card-text"> Cree una nueva partida, y espere hasta que tenga un rival.</p>
+							<button id="btnCP" class="btn btn-primary mb-2 mr-sm-2"> Crear Partida </button>
+						</div>	
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div id="listaUsuarios">
+					<div id="mAU">
+						<h4>Usuarios conectados</h4>
+						<ul class="list-group">
+							<li class="list-group-item"></li>
+						</ul>	
+					</div>
+				</div>
+			</div>
+			<div class="col-4">
+				<div id="listaPartidas">
+					<div class="row" id="mLP">
+						<div class="col">
+							<h4> Partidas Disponibles </h4>
+							<ul class="list-group"></ul>
+						</div>
+					</div>
+				</div>
+			</div>
+	  	</div>
 	  	<div id="ancla">
 	  	</div>
 	</div>
