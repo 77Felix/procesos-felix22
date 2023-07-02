@@ -178,9 +178,9 @@ function Usuario(nick,juego){
 		this.flota["b2"]=new Barco("b2",2, new Horizontal());
 		this.flota["b4"]=new Barco("b4",4, new Horizontal());
 		// otros barcos: 1, 3, 5,...
-		//this.flota["b1"]=new Barco("b1",1, new Horizontal());
-		//this.flota["b3"]=new Barco("b3",3, new Horizontal());
-		//this.flota["b5"]=new Barco("b5",5, new Horizontal());
+		this.flota["b1"]=new Barco("b1",1, new Horizontal());
+		this.flota["b3"]=new Barco("b3",3, new Horizontal());
+		this.flota["b5"]=new Barco("b5",5, new Horizontal());
 		//this.flota["b5"]=new Barco("b5",5);
 	}
 
@@ -262,8 +262,8 @@ function Usuario(nick,juego){
         for (let key in this.flota) {
             if (this.flota[key].nombre == nombre) {
                 if (this.comprobarLimites(this.flota[key].tam, x)) {
-                    return this.flota[key];
-					//return true;
+                    //return this.flota[key];
+					return true;
                 } else {
                     return false;
                 }
