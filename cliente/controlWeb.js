@@ -109,10 +109,12 @@ function ControlWeb(){
 		cadena=cadena+"<h4>Bienvenido "+rest.nick+"</h4>";
 		cadena=cadena+'<button style="background-color: #EA2C1A" id="btnSalir" class="btn mb-2 mr-sm-2">Cerrar sesión</button>';
 		cadena=cadena+"<div id='codigo'></div>"
+		//cadena="<h4>Código de la partida: "+codigo+"</h4>";
 		cadena=cadena+"</div></div>";
 		$('#agregarUsuario').append(cadena);
 		this.mostrarCrearPartida();
 		this.mostrarBuscarPartida();
+		//this.mostrarCodigo(codigo);
 		rest.obtenerListaPartidasDisponibles();
 		$("#btnSalir").on("click",function(e){		
 			$("#mCP").remove();
@@ -158,7 +160,7 @@ function ControlWeb(){
 	this.mostrarAbandonarPartida = function(){
 		//let cadena='<button id="btnAP" class="btn mb-2 mr-sm-2">Abandonar partida</button>';
 		//cadena = cadena + '</div>';
-		let cadena = "<h4>Código de la partida: "+codigo+"</h4>";
+		let cadena = "<h4>Código de la partida: "+rest.codigo+"</h4>";
 		cadena = cadena + '<button id="btnAP" class="btn mb-2 mr-sm-2">Abandonar partida</button>';
 
 		$('#codigo').append(cadena);

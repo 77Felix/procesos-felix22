@@ -19,7 +19,7 @@ let servidorWS = new sWS.ServidorWS();
 const passport = require("passport");
 
 const cookieSession=require("cookie-session");
-const passportSetup = require("./servidor/passport-setup.js");
+require("./servidor/passport-setup.js");
 
 //hacer 'npm install passport' --> Y en el package.json
 
@@ -127,14 +127,14 @@ app.get("/obtenerLogs", function(request, response){
   });
 });
 
-app.get("comprobarUsuario", function(request, response){
+app.get("/comprobarUsuario/:nick", function(request, response){
   let nick = request.params.nick;
   let us = juego.obtenerUsuario(nick);
   let res = {"nick": -1};
   if(us){
     res.nick = us.nick;
   }
-  responde.send(res);
+  response.send(res);
 });
 
 // Start the server

@@ -79,7 +79,7 @@ function ServidorWS(){
                         console.log("Salir del servidor");
                         juego.jugadorAbandona(nick, codigo);
                         console.log(user.partida.fase);
-                        cli.enviarAlRestoPartida(socket,codigoStr,"jugadorAbandona",nick);
+                        cli.enviarRestoMiembrosPartida(socket,codigoStr,"jugadorAbandona",nick);
 
                         let lista = juego.obtenerPartidasDisponibles();
                         cli.enviarATodos(socket,"actualizarListaPartidas",lista);
