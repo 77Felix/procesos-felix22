@@ -5,22 +5,22 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title> Batalla naval </title>
 	<link rel="shortcut icon" href="./cliente/img/favicon.ico">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"><!--si-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<script src="https://code.jquery.com/jquery-3.6.1.min.js" 
 		integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous">
-	</script><!--si-->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script><!--si-->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script><!--si-->
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" 
 		integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" 
 		crossorigin="anonymous" referrerpolicy="no-referrer">
-	</script><!--si-->
+	</script>
 	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.min.css" 
 		integrity="sha512-f8mUMCRNrJxPBDzPJx3n+Y5TC5xp6SmStstEfgsDXZJTcxBakoB5hvPLhAfJKa9rCvH+n3xpJ2vQByxLk4WP2g==" 
 		crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.3/socket.io.js" 
 		integrity="sha512-iWPnCISAd/J+ZacwV2mbNLCaPGRrRo5OS81lKTVPtRg1wGTC20Cfmp5Us5RcbLv42QLdbAWl0MI57yox5VecQg==" 
-		crossorigin="anonymous" referrerpolicy="no-referrer"></script><!--si-->
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<script src="./cliente/clienteRest.js"></script> <!-- Aquí se pone el nombre del archivo tal y como es -->
 	<script src="./cliente/controlWeb.js"></script>
@@ -43,13 +43,7 @@
 	<nav class="navbar navbar-expand-lg bg-secondary navbar-dark">
 		<a class="navbar-brand" href="#">Hundir La Flota</a> 
 		<span id="agregarUsuario"></span>
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav" id="listaNav">
-				<li class="nav-item" id="listaNav">
-					<a class="nav-link" href="#" id="btnSalir"> Cerrar Sesión </a>
-				</li>
-			</ul>
-		</div>
+		<div class="collapse navbar-collapse" id="navbarNav"></div>
 	</nav>
 	<div class="container" style="margin-top:30px">
 		<div class="row">
@@ -88,6 +82,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="col-4">
 				<div id="listaPartidas">
 					<div class="row" id="mLP">
@@ -99,8 +94,7 @@
 				</div>
 			</div>
 	  	</div>
-	  	<div id="ancla">
-	  	</div>
+	  	<div id="ancla"> </div>
 	</div>
 
 	<div class="modal" id="miModal">
@@ -110,15 +104,15 @@
             		<h4 class="modal-title"> Atención </h4>
             		<button type="button" class="close" data-dismiss="modal">&times;</button>
          		</div>
-        	<div class="modal-body" id="contenidoModal">
-        	</div>
+        		<div class="modal-body" id="contenidoModal"> </div>
         		<div class="modal-footer">
             	<button type="button" class="btn btn-danger" data-dismiss="modal"> Cerrar </button>
+				</div>
         	</div>
 		</div>
     </div>
 </div>
-	
+
 	<script>
 		rest=new ClienteRest();
 		iu=new ControlWeb();
