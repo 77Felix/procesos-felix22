@@ -28,7 +28,7 @@ describe("El juego...", function () {
     //comprobar que la partida esta en fase jugando
   });
 
-  it("comprobamos que luis crea la partida, y luis se una a ella", function () {
+  it("comprobamos que pepe crea la partida, y luis se une a ella", function () {
     let codigo=us1.crearPartida();
     let partida=miJuego.partidas[codigo];
     us2.unirseAPartida(codigo);
